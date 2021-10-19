@@ -19,7 +19,7 @@ def draw(data_train, data_test, lr=1e-2, epochs_gd=70000, epochs_cg=20, delta=1e
         W_gd, _ = gradient_descent(degree, data_train, lr=lr, epochs=epochs_gd, delta=delta, lambda_=lambda_).gradient_descent()
         loss_gd = get_test_loss_normalized(W_gd, data_test, lambda_)
 
-        W_cg, _ = conjugate_gradient(degree, data_train, lr=lr, epochs=epochs_cg, delta=delta, lambda_=lambda_).conjugate_gradient()
+        W_cg, _ = conjugate_gradient(degree, data_train, epochs=epochs_cg, delta=delta, lambda_=lambda_).conjugate_gradient()
         loss_cg = get_test_loss_normalized(W_cg, data_test, lambda_)
 
         data_test_X_transformed = transform(data_test[0], degree)

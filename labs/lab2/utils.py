@@ -10,6 +10,7 @@ def transform(X):
         X_transformed[i][X.shape[1]] = 1
     return X_transformed
 
+
 def calc_loss(X, beta, Y, lambda_):
     """
     计算loss
@@ -23,7 +24,7 @@ def calc_loss(X, beta, Y, lambda_):
     Returns:
         float: loss
     """
-    loss = np.mean(-Y.T @ X @ beta + np.log(1 + np.exp(X @ beta)))
+    loss = np.mean(-Y.T @ X @ beta - np.log(1 - sigmoid(X @ beta)))
     if lambda_ != None:
         loss += lambda_ / 2 * np.mean(beta.T @ beta)
     return loss
@@ -41,15 +42,22 @@ def calc_gradient(X, beta, Y, lambda_):
     Returns:
         list: 梯度
     """
-    exp = np.exp(X @ beta)
-    gradient = (X.T @ (exp / (1 + exp)) - X.T @ Y) / X.shape[0]
+    gradient = (X.T @ model(X, beta) - X.T @ Y) / X.shape[0]
 
     if lambda_ != None:
         gradient += lambda_ * beta
     return gradient
 
-def sigmoid(X):
-    return 1 / (1 + np.exp(-X))
+def sigmoid(x):
+    x_ravel = x.ravel()  # 将numpy数组展平
+    length = len(x_ravel)
+    y = []
+    for index in range(length):
+        if x_ravel[index] >= 0:
+            y.append(1.0 / (1 + np.exp(-x_ravel[index])))
+        else:
+            y.append(np.exp(x_ravel[index]) / (np.exp(x_ravel[index]) + 1))
+    return np.array(y).reshape(x.shape)
 
 def model(X, beta):
     output = sigmoid(X @ beta)
@@ -116,4 +124,11 @@ def get_Xs(dataset):
 def plot(beta, start, end):
     x0 = np.linspace(start, end, 1000)
     x1 = -(beta[0] * x0 + beta[2]) / beta[1]
-    plt.plot(x0, x1)
+    plt.plot(x0, x1, label="discriminant")
+
+def plot_3d(beta, start, end, ax):
+    x0 = np.linspace(start, end, 1000)
+    x1 = np.linspace(start, end, 1000)
+    x0, x1 = np.meshgrid(x0, x1)
+    x2 = -(beta[0] * x0 + beta[1] * x1 + beta[3]) / beta[2]
+    ax.plot_surface(x0, x1, x2, linewidth=0, antialiased=False)

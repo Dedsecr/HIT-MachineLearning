@@ -68,7 +68,7 @@ def draw_loss_lr(data_train, data_test, degree=7, epochs=70000, delta=1e-7, lamb
     plt.figure(figsize=(12, 6))
     for lr in lrs:
         gd = gradient_descent(degree, data_train, lr=lr, epochs=epochs, delta=delta, lambda_=lambda_)
-        W, _, actual_epoch = gd.gradient_descent()
+        W, actual_epoch = gd.gradient_descent()
         loss = get_test_loss_normalized(W, data_test, lambda_)
         losses.append(loss)
         actual_epochs.append(actual_epoch)

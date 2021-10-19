@@ -4,14 +4,13 @@ from data import *
 from utils import *
 
 class conjugate_gradient:
-    def __init__(self, degree, data_train, lr=1e-2, epochs=20, delta=1e-7, lambda_=1e-7):
+    def __init__(self, degree, data_train, epochs=20, delta=1e-7, lambda_=1e-7):
         """
         共轭梯度法初始化
 
         Args:
             degree (int)): 维度
             data_train (tuple): 训练样本
-            lr (float), optional): 学习率. Defaults to 1e-2.
             epochs (int, optional): 最大迭代次数. Defaults to 20.
             delta (float), optional): 早停策略的参数值. Defaults to 1e-7.
             lambda_ (float), optional): 正则项系数. Defaults to 1e-7.
@@ -19,7 +18,6 @@ class conjugate_gradient:
         self.degree = degree
         self.lambda_ = lambda_
         self.data_train = data_train
-        self.lr = lr
         self.epochs = epochs
         self.delta = delta
         self.data_train_X_transformed = transform(data_train[0], degree)
@@ -51,11 +49,11 @@ class conjugate_gradient:
         return x, last_epoch
     
 # 画图
-def draw(data_train, data_test, lr=1e-2, epochs=20, delta=1e-7, lambda_=1e-7, degrees=[2, 5, 7, 9]):
+def draw(data_train, data_test, epochs=20, delta=1e-7, lambda_=1e-7, degrees=[2, 5, 7, 9]):
     plt.figure(figsize=(12, 8))
     for i, degree in enumerate(degrees):
         plt.subplot(2, 2, i + 1)
-        cg = conjugate_gradient(degree, data_train, lr=lr, epochs=epochs, delta=delta, lambda_=lambda_)
+        cg = conjugate_gradient(degree, data_train, epochs=epochs, delta=delta, lambda_=lambda_)
         W, actual_epoch = cg.conjugate_gradient()
         data_test_X_transformed = transform(data_test[0], degree)
         plt.scatter(data_train[0], data_train[1], facecolor="none", edgecolor="b", label="Training Data")
