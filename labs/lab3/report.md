@@ -223,7 +223,7 @@ $$
 
 ### 4. UCI数据集
 
-我们选用UCI数据集[Iris](http://archive.ics.uci.edu/ml/datasets/Iris)，该数据集共有$150$个数据，类别为$4$，分别选用k-means和KMM算法进行实验，实验结果如下：
+我们选用UCI数据集[Iris](http://archive.ics.uci.edu/ml/datasets/Iris)，该数据集共有$150$个数据，类别为$3$，分别选用k-means和GMM算法进行实验，实验结果如下：
 
 > k-means：epoch=6, acc=89.33%
 >
